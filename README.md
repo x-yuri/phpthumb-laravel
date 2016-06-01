@@ -1,2 +1,1 @@
-# phpthumb-laravel
-phpThumb() - The PHP thumbnail generator
+# phpThumb() - The PHP thumbnail generator
