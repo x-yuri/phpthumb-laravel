@@ -1,3 +1,12 @@
 {
-    "name": "x-yuri/phpthumb-laravel"
+    "name": "x-yuri/phpthumb-laravel",
+    "require": {
+        "laravel/framework": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpThumb\\": "src"
+        },
+        "files": ["funcs.php", "phpthumb-github/phpthumb.functions.php"]
+    }
 }

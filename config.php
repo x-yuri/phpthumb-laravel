@@ -1,25 +1,14 @@
 <?php
-//////////////////////////////////////////////////////////////
-//   phpThumb() by James Heinrich <info@silisoftware.com>   //
-//        available at http://phpthumb.sourceforge.net      //
-//         and/or https://github.com/JamesHeinrich/phpThumb //
-//////////////////////////////////////////////////////////////
-///                                                         //
-// See: phpthumb.readme.txt for usage instructions          //
-//      NOTE: THIS FILE HAS NO EFFECT IN OBJECT MODE!       //
-//            THIS CONFIG FILE ONLY APPLIES TO phpThumb.php //
-//                                                         ///
-//////////////////////////////////////////////////////////////
 
-define('phpThumbConfigFileVersion', '1.7.12');
-ob_start();
-if (!file_exists(dirname(__FILE__).'/phpthumb.functions.php') || !include_once(dirname(__FILE__).'/phpthumb.functions.php')) {
-	ob_end_flush();
-	die('failed to include_once(phpthumb.functions.php) - realpath="'.realpath(dirname(__FILE__).'/phpthumb.functions.php').'"');
-}
-ob_end_clean();
-
-
+$overrides = [
+    # override options here
+    # 'config' => [
+    # ],
+    # 'defaults_get_string_override' => ...,
+    # 'defaults_disable_get_params' => ...,
+    # 'defaults' => [
+    # ],
+];
 
 /****************************************************************************************/
 /* START USER CONFIGURATION SECTION: */
@@ -242,13 +231,18 @@ $PHPTHUMB_DEFAULTS_DISABLEGETPARAMS  = false; // if true, GETstring parameters w
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-// Function for generating hashed calls to phpThumb if 'high_security_enabled'
-// example:
-//   require_once('phpThumb/phpThumb.config.php');
-//   echo '<img src="'.htmlspecialchars(phpThumbURL('src=/images/pic.jpg&w=50', '/phpThumb/phpThumb.php')).'">';
 
-function phpThumbURL($ParameterString, $path_to_phpThumb='phpThumb.php') {
-	global $PHPTHUMB_CONFIG;
-	return $path_to_phpThumb.'?'.$ParameterString.$PHPTHUMB_CONFIG['high_security_url_separator'].'hash='.md5($ParameterString.$PHPTHUMB_CONFIG['high_security_password']);
+function __g($a, $k, $def = NULL) {
+    return isset($a[$k]) ? $a[$k] : $def;
 }
+return [
+    'config' => array_merge($PHPTHUMB_CONFIG,
+        __g($overrides, 'config', [])),
+    'defaults_get_string_override' => __g($overrides, 'defaults_get_string_override')
+        ?: $PHPTHUMB_DEFAULTS_GETSTRINGOVERRIDE,
+    'defaults_disable_get_params' => __g($overrides, 'defaults_disable_get_params')
+        ?: $PHPTHUMB_DEFAULTS_DISABLEGETPARAMS,
+    'defaults' => array_merge(
+        __g(get_defined_vars(), 'PHPTHUMB_DEFAULTS', []),
+        __g($overrides, 'defaults', [])),
+];
