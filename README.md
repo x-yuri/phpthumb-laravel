@@ -53,7 +53,10 @@ Ignore `"phpThumb.config.php" version does not match phpThumb version` error. It
 ## Usage
 
 	Route::get('test', function () {
-        return '<img src="' . htmlspecialchars(phpthumb('src=/path/to/image/relative/to/doc/root.png&w=50')) . '">';
+        return '<img src="' . htmlspecialchars(phpthumb([
+            'src' => '/path/to/image/relative/to/doc/root.png',
+            'w' => '50',
+        )) . '">';
     });
 
 For more information see [the readme](phpthumb-github/docs/phpthumb.readme.txt).
